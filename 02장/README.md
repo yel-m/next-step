@@ -56,3 +56,46 @@ public class CalculatorTest {
 ```
 
 - JUnit의 Assert 클래스는 assertEquals() 이외에도 assertTrue(), assertFalse() / assertNull(), assertNotNull() / assertArrayEquals() 메서드를 제공한다.
+
+## 테스트 코드 중복 제거
+
+### Before 메서드
+
+- JUnit은 테스트를 진행하기 위한 초기화 작업을 `@Before` 애노테이션을 활용해 다음과 같이 구현할 것을 추천한다.
+
+```java
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class CalculatorTest {
+	private Calculator cal;
+
+	**@Before
+	public void setup() {
+		cal = new Calculator();
+	}**
+
+	@Test
+	public void add() {
+		Calculator cal = new Calculator();
+		**assertEquals(9, cal.add(6,3));**
+	}
+
+	@Test
+	public void substract() {
+		Calculator cal = new Calculator();
+		**assertEquals(3, cal.substract(6,3));**
+	}
+}
+```
+
+- 이와 같이 Calculator 인스턴스를 매 테스트마다 생성하는 이유는 add() 메서드를 실행할 때 Calculator 상태 값이 변경되어 다음 테스트 메서드인 substract() 테스트 메서드를 실행할 때 영향을 미칠 수 있기 때문이다.
+- 테스트 메서드 간 영향을 미칠 경우 테스트 실행 순서나 Calculator 상태 값에 따라 테스트가 성공하거나 실패할 수 있다.
+- Before 애너테이션을 추천하는 이유
+    - JUnit에는 @RunWith, @Rule 같은 애너테이션을 사용해 기능을 확장할 수 있는데, @Before 안이어야만 @RunWith, @Rule에서 초기화된 객체에 접근할 수 있다는 제약 사항이 있기 때문이다.
+
+### After 메서드
+
+- 메서드 실행이 끝난 후 실행됨으로써 후처리 작업을 담당한다.
