@@ -1,3 +1,4 @@
+
 public class StringCalculator {
     int add(String str) throws NullPointerException{
         int sum = 0;
