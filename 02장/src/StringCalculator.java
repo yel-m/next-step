@@ -1,19 +1,29 @@
-
 public class StringCalculator {
-    int add(String str) throws NullPointerException{
+    int add(String str) throws NullPointerException {
         int sum = 0;
-        String[] numbers;
-
-        if(str.substring(0, 2) == "\\" && str.substring(3, 5) == "\n") {
+        String[] separatedStrings;
+        if ("//".equals(str.substring(0, 2)) && "\n".equals(str.substring(3, 4))) {
             String customSeparator = String.valueOf(str.charAt(2));
-            numbers = str.split(customSeparator);
+            str = str.replace("//", "").replace("\n", "");
+            separatedStrings = str.split(customSeparator);
+            for (String separatedString : separatedStrings) {
+                sum += changeStingToInteger(separatedString);
+            }
         } else {
-            numbers = str.split("[:,]");
+            separatedStrings = str.split("[:,]");
+            for (String separatedString : separatedStrings) {
+                sum += changeStingToInteger(separatedString);
+            }
         }
-        
-        for (int i = 0; i < numbers.length; i++) {
-            sum += Integer.parseInt(numbers[i]);
-        }
+
         return sum;
+    }
+
+    Integer changeStingToInteger(String str) {
+        if(str == "" || str == null) {
+            return 0;
+        } else {
+            return Integer.parseInt(str);
+        }
     }
 }
