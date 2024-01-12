@@ -1,31 +1,25 @@
-package test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import StringCalculator;
+import static org.junit.Assert.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class StringCalculatorTest {
 
-class StringCalculatorTest {
     StringCalculator cal;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         cal = new StringCalculator();
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
-    void setEmptyString() {
+    public void setEmptyString() {
         assertEquals(0, cal.add(" "));
     }
 
     @Test
-    void setStringWithDefaultSeparator() {
+    public void setStringWithDefaultSeparator() {
         assertEquals(6, cal.add("1,2:3"));
     }
 
@@ -33,9 +27,7 @@ class StringCalculatorTest {
     // 테스트 케이스 메서드 너무 긴가?
 
     @Test
-    void setStringWithCustomSeparatorString() {
+    public void setStringWithCustomSeparatorString() {
         assertEquals(6, cal.add("//$\n1$2$3"));
     }
-
-
 }
