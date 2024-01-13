@@ -20,7 +20,7 @@ public class StringCalculator {
     }
 
     Integer changeStingToInteger(String str) {
-        if(str == "" || str == null) {
+        if(str.isBlank() || str == null) {
             return 0;
         } else {
             return Integer.parseInt(str);
