@@ -33,11 +33,21 @@ public class StringCalculatorTest {
         assertEquals(6, cal.add("1,2:3"));
     }
 
+    @Test
+    public void setNegativeStringWithDefaultSeparator() {
+        assertEquals(6, cal.add("1,-2:-3"));
+    }
+
     // 콜론, 쉼표 테스트케이스 더 작성해야 하나?
     // 테스트 케이스 메서드 너무 긴가?
 
     @Test
     public void setStringWithCustomSeparatorString() {
         assertEquals(6, cal.add("//$\n1$2$3"));
+    }
+
+    @Test
+    public void setNegativeStringWithCustomSeparatorString() {
+        assertEquals(6, cal.add("//^\n-1^-2^-3"));
     }
 }

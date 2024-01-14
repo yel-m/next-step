@@ -13,7 +13,10 @@ public class StringCalculator {
         int sum = 0;
         String[] separatedStrings = str.split("[:,]");
         for (String separatedString : separatedStrings) {
-            sum += changeStingToInteger(separatedString);
+            if(separatedString.charAt(0) == '-')
+                sum -= changeStingToInteger(separatedString);
+            else
+                sum += changeStingToInteger(separatedString);
         }
         return sum;
     }
