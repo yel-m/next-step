@@ -19,7 +19,17 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void setStringWithDefaultSeparator() {
+    public void setStringWithDefaultSeparator1() {
+        assertEquals(6, cal.add("1,2,3"));
+    }
+
+    @Test
+    public void setStringWithDefaultSeparator2() {
+        assertEquals(6, cal.add("1:2:3"));
+    }
+
+    @Test
+    public void setStringWithDefaultSeparator3() {
         assertEquals(6, cal.add("1,2:3"));
     }
 
