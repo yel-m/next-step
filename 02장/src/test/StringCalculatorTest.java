@@ -1,53 +1,52 @@
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
 
-public class StringCalculatorTest {
+class StringCalculatorTest {
 
     StringCalculator cal;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         cal = new StringCalculator();
     }
 
     @Test
-    public void setEmptyString() {
-        assertEquals(0, cal.add(" "));
+    void setEmptyString() {
+        Assertions.assertEquals(0, cal.add(" "));
     }
 
     @Test
-    public void setStringWithDefaultSeparator1() {
-        assertEquals(6, cal.add("1,2,3"));
+    void setStringWithDefaultSeparator1() {
+        Assertions.assertEquals(6, cal.add("1,2,3"));
     }
 
     @Test
-    public void setStringWithDefaultSeparator2() {
-        assertEquals(6, cal.add("1:2:3"));
+    void setStringWithDefaultSeparator2() {
+        Assertions.assertEquals(6, cal.add("1:2:3"));
     }
 
     @Test
-    public void setStringWithDefaultSeparator3() {
-        assertEquals(6, cal.add("1,2:3"));
+    void setStringWithDefaultSeparator3() {
+        Assertions.assertEquals(6, cal.add("1,2:3"));
     }
 
     @Test
-    public void setNegativeStringWithDefaultSeparator() {
-        assertEquals(6, cal.add("1,-2:-3"));
+    void setNegativeStringWithDefaultSeparator() {
+        Assertions.assertEquals(6, cal.add("1,-2:-3"));
     }
 
     // 콜론, 쉼표 테스트케이스 더 작성해야 하나?
     // 테스트 케이스 메서드 너무 긴가?
 
     @Test
-    public void setStringWithCustomSeparatorString() {
-        assertEquals(6, cal.add("//$\n1$2$3"));
+    void setStringWithCustomSeparatorString() {
+        Assertions.assertEquals(6, cal.add("//$\n1$2$3"));
     }
 
     @Test
-    public void setNegativeStringWithCustomSeparatorString() {
-        assertEquals(6, cal.add("//^\n-1^-2^-3"));
+    void setNegativeStringWithCustomSeparatorString() {
+        Assertions.assertEquals(6, cal.add("//^\n-1^-2^-3"));
     }
 }
