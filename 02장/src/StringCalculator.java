@@ -13,7 +13,7 @@ public class StringCalculator {
         int sum = 0;
         String[] separatedStrings = str.split("[:,]");
         for (String separatedString : separatedStrings) {
-            int number = changeStingToInteger(separatedString);
+            int number = changeStringToInteger(separatedString);
             if(number < 0)
                 throw new RuntimeException("음수를 입력해야 합니다.");
             else
@@ -22,7 +22,7 @@ public class StringCalculator {
         return sum;
     }
 
-    int changeStingToInteger(String str) {
+    int changeStringToInteger(String str) {
         if(str.isBlank() || str == null) {
             return 0;
         } else {
