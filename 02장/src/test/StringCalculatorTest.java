@@ -46,7 +46,9 @@ class StringCalculatorTest {
     }
 
     @Test
-    void setNegativeStringWithCustomSeparatorString() {
-        Assertions.assertEquals(6, cal.add("//^\n-1^-2^-3"));
+    void failOnNegativeInput() {
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            cal.add("//^\n-1^-2^-3");
+        });
     }
 }
