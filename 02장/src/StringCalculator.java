@@ -2,27 +2,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringCalculator {
+
+    private final Pattern pattern = Pattern.compile("//(.)\n(.*)");
+
     int add(String str) {
-        String[] separatedValues;
-        Matcher matcher = Pattern.compile("//(.)\n(.*)").matcher(str);
+        String[] separatedExpression;
+        Matcher matcher = pattern.matcher(str);
         if (matcher.find()) {
             String customDelimiter = matcher.group(1);
-            separatedValues = matcher.group(2).split(customDelimiter);
-            return calculateSumFromSeparatedValues(separatedValues);
-        } else {
-            separatedValues = str.split("[:,]");
-            return calculateSumFromSeparatedValues(separatedValues);
+            separatedExpression = matcher.group(2).split(customDelimiter);
+            return calculateSumFromSeparatedValues(separatedExpression);
         }
+        separatedExpression = str.split("[:,]");
+        return calculateSumFromSeparatedValues(separatedExpression);
     }
 
-    int calculateSumFromSeparatedValues(String[] separatedValues) {
+    int calculateSumFromSeparatedValues(String[] separatedExpression) {
         int sum = 0;
-        for (String value : separatedValues) {
-            int number = changeStringToInteger(value);
+        for (String expression : separatedExpression) {
+            int number = changeStringToInteger(expression);
             if(number < 0)
                 throw new RuntimeException("음수를 입력해야 합니다.");
-            else
-                sum += number;
+            sum += number;
         }
         return sum;
     }
