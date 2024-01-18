@@ -13,8 +13,10 @@ class StringCalculatorTest {
     }
 
     @Test
-    void setEmptyString() {
+    void add_null_또는_빈문자() {
+
         Assertions.assertEquals(0, cal.add(" "));
+        Assertions.assertEquals(0, cal.add(null));
     }
 
     @Test
