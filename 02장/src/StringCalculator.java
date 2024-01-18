@@ -17,20 +17,29 @@ public class StringCalculator {
         if (matcher.find()) {
             String customDelimiter = matcher.group(1);
             separatedExpression = matcher.group(2).split(customDelimiter);
-            return sum(separatedExpression);
+            return sum(toInts(separatedExpression));
         }
         separatedExpression = str.split("[:,]");
-        return sum(separatedExpression);
+        return sum(toInts(separatedExpression));
     }
 
-    int sum(String[] values) {
+    int[] toInts(String[] values) {
+        int[] numbers = new int[values.length];
+        for(int i = 0; i < values.length; i++) {
+            numbers[i] = Integer.parseInt(values[i]);
+        }
+        return numbers;
+    }
+
+    int sum(int[] numbers) {
         int sum = 0;
-        for (String value : values) {
-            int number = Integer.parseInt(value);
+        for (int number : numbers) {
             if(number < 0)
                 throw new RuntimeException("음수를 입력해야 합니다.");
             sum += number;
         }
         return sum;
     }
+
+
 }
