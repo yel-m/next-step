@@ -20,6 +20,11 @@ class StringCalculatorTest {
     }
 
     @Test
+    void add_숫자하나() throws Exception {
+        Assertions.assertEquals(1, cal.add("1"));
+    }
+
+    @Test
     void setStringWithDefaultSeparator1() {
         Assertions.assertEquals(6, cal.add("1,2,3"));
     }
