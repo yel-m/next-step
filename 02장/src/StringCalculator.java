@@ -6,7 +6,13 @@ public class StringCalculator {
     private final Pattern pattern = Pattern.compile("//(.)\n(.*)");
 
     int add(String str) {
+
         String[] separatedExpression;
+
+        if(str.isBlank() || str == null) {
+            return 0;
+        }
+
         Matcher matcher = pattern.matcher(str);
         if (matcher.find()) {
             String customDelimiter = matcher.group(1);
@@ -20,19 +26,11 @@ public class StringCalculator {
     int calculateSumFromSeparatedValues(String[] separatedExpression) {
         int sum = 0;
         for (String expression : separatedExpression) {
-            int number = changeStringToInteger(expression);
+            int number = Integer.parseInt(expression);
             if(number < 0)
                 throw new RuntimeException("음수를 입력해야 합니다.");
             sum += number;
         }
         return sum;
-    }
-
-    int changeStringToInteger(String str) {
-        if(str.isBlank() || str == null) {
-            return 0;
-        } else {
-            return Integer.parseInt(str);
-        }
     }
 }
