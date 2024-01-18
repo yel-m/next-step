@@ -17,16 +17,16 @@ public class StringCalculator {
         if (matcher.find()) {
             String customDelimiter = matcher.group(1);
             separatedExpression = matcher.group(2).split(customDelimiter);
-            return calculateSumFromSeparatedValues(separatedExpression);
+            return sum(separatedExpression);
         }
         separatedExpression = str.split("[:,]");
-        return calculateSumFromSeparatedValues(separatedExpression);
+        return sum(separatedExpression);
     }
 
-    int calculateSumFromSeparatedValues(String[] separatedExpression) {
+    int sum(String[] values) {
         int sum = 0;
-        for (String expression : separatedExpression) {
-            int number = Integer.parseInt(expression);
+        for (String value : values) {
+            int number = Integer.parseInt(value);
             if(number < 0)
                 throw new RuntimeException("음수를 입력해야 합니다.");
             sum += number;
