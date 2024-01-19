@@ -9,7 +9,7 @@ public class StringCalculator {
 
         String[] separatedExpression;
 
-        if(str.isBlank() || str == null) {
+        if(str == null || str.isBlank()) {
             return 0;
         }
 
@@ -21,6 +21,9 @@ public class StringCalculator {
         }
         separatedExpression = str.split("[:,]");
         return sum(toInts(separatedExpression));
+    }
+    boolean isBlankOrNull(String text) {
+        return text == null || text.isBlank();
     }
 
     int[] toInts(String[] values) {
