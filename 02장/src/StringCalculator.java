@@ -1,4 +1,3 @@
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,16 +30,22 @@ public class StringCalculator {
     int[] toInts(String[] values) {
         int[] numbers = new int[values.length];
         for(int i = 0; i < values.length; i++) {
-            numbers[i] = Integer.parseInt(values[i]);
+            numbers[i] = toPositive(values[i]);
         }
         return numbers;
+    }
+
+    int toPositive(String value) {
+        int number = Integer.parseInt(value);
+        if(number < 0) {
+            throw new RuntimeException();
+        }
+        return number;
     }
 
     int sum(int[] numbers) {
         int sum = 0;
         for (int number : numbers) {
-            if(number < 0)
-                throw new RuntimeException("음수를 입력해야 합니다.");
             sum += number;
         }
         return sum;
