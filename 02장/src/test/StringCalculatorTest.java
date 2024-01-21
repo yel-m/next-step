@@ -25,37 +25,29 @@ class StringCalculatorTest {
     }
 
     @Test
-    void setStringWithDefaultSeparator1() {
+    void add_쉼표_구분자() throws Exception{
         Assertions.assertEquals(6, cal.add("1,2,3"));
     }
 
     @Test
-    void setStringWithDefaultSeparator2() {
+    void add_콜론_구분자() throws Exception{
         Assertions.assertEquals(6, cal.add("1:2:3"));
     }
 
     @Test
-    void setStringWithDefaultSeparator3() {
+    void add_쉼표_또는_콜론_구분자() throws Exception{
         Assertions.assertEquals(6, cal.add("1,2:3"));
     }
 
     @Test
-    void setNegativeStringWithDefaultSeparator() {
-        Assertions.assertEquals(6, cal.add("1,-2:-3"));
-    }
-
-    // 콜론, 쉼표 테스트케이스 더 작성해야 하나?
-    // 테스트 케이스 메서드 너무 긴가?
-
-    @Test
-    void setStringWithCustomSeparatorString() {
+    void add_custom_구분자() throws Exception{
         Assertions.assertEquals(6, cal.add("//$\n1$2$3"));
     }
 
     @Test
-    void failOnNegativeInput() {
+    void add_negative() throws Exception {
         Assertions.assertThrows(RuntimeException.class, () -> {
-            cal.add("//^\n-1^-2^-3");
+            cal.add("1,-2:-3");
         });
     }
 }
