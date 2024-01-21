@@ -1,3 +1,4 @@
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -5,25 +6,26 @@ public class StringCalculator {
 
     private final Pattern pattern = Pattern.compile("//(.)\n(.*)");
 
-    int add(String str) {
+    int add(String text) {
 
-        String[] separatedExpression;
-
-        if(str == null || str.isBlank()) {
+        if(text == null || text.isBlank()) {
             return 0;
         }
 
-        Matcher matcher = pattern.matcher(str);
-        if (matcher.find()) {
-            String customDelimiter = matcher.group(1);
-            separatedExpression = matcher.group(2).split(customDelimiter);
-            return sum(toInts(separatedExpression));
-        }
-        separatedExpression = str.split("[:,]");
-        return sum(toInts(separatedExpression));
+        return sum(toInts(split(text)));
+
     }
     boolean isBlankOrNull(String text) {
         return text == null || text.isBlank();
+    }
+
+    String[] split(String text) {
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            String customDelimiter = matcher.group(1);
+            return matcher.group(2).split(customDelimiter);
+        }
+        return text.split("[:,]");
     }
 
     int[] toInts(String[] values) {
