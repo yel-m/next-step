@@ -2,12 +2,13 @@ package webserver;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import util.RequestUtil;
+import util.RequestInfoUtil;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -24,6 +25,7 @@ public class RequestHandler extends Thread {
                 connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             ArrayList<String> requestInfos = new ArrayList<>();
             String info;
@@ -31,12 +33,14 @@ public class RequestHandler extends Thread {
                 if (info == null) { return; } // NullPointerException 처리 안해도 되나?
                 requestInfos.add(info);
             }
+
             for(String requestInfo : requestInfos) {
                 System.out.println(requestInfo);
             }
-            String requestUrl = RequestUtil.getRequestUrl(requestInfos);
+            String requestUrl = RequestInfoUtil.getRequestUrl(requestInfos);
+
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = "Hello World".getBytes();
+            byte[] body = Files.readAllBytes(new File("./webapp" + requestUrl).toPath());
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {

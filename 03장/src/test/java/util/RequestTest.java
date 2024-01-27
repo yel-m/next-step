@@ -11,6 +11,6 @@ class RequestTest {
     @Test
     void 요청_URL() {
         ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html HTTP/1.1", "Host : localhost:8080"));
-        Assertions.assertEquals("/index.html", RequestUtil.getRequestUrl(requestInfos));
+        Assertions.assertEquals("/index.html", RequestInfoUtil.getRequestUrl(requestInfos));
     }
 }
