@@ -1,6 +1,7 @@
 package util;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,11 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
 public class HttpRequestUtils {
+
+    public static String parsePathString(List<String> requestInfos) {
+        return requestInfos.get(0).split(" ")[1];
+    }
+
     /**
      * @param queryString은
      *            URL에서 ? 이후에 전달되는 field1=value1&field2=value2 형식임
@@ -36,7 +42,7 @@ public class HttpRequestUtils {
                 .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
     }
 
-    static Pair getKeyValue(String keyValue, String regex) {
+    public static Pair getKeyValue(String keyValue, String regex) {
         if (Strings.isNullOrEmpty(keyValue)) {
             return null;
         }
@@ -57,7 +63,7 @@ public class HttpRequestUtils {
         String key;
         String value;
 
-        Pair(String key, String value) {
+        public Pair(String key, String value) {
             this.key = key.trim();
             this.value = value.trim();
         }

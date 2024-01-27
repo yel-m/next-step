@@ -1,16 +1,23 @@
-package java.util;
+package util;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.junit.Test;
 
-import util.HttpRequestUtils;
 import util.HttpRequestUtils.Pair;
 
 public class HttpRequestUtilsTest {
+    @Test
+    public void parsePathString() {
+        ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html HTTP/1.1", "Host : localhost:8080"));
+        assertEquals("/index.html", HttpRequestUtils.parsePathString(requestInfos));
+    }
+
     @Test
     public void parseQueryString() {
         String queryString = "userId=javajigi";

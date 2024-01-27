@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import util.RequestInfoUtil;
+import util.HttpRequestUtils;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -27,18 +27,20 @@ public class RequestHandler extends Thread {
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
             ArrayList<String> requestInfos = new ArrayList<>();
             String info;
+
             while(!"".equals(info = reader.readLine())) {
                 if (info == null) { return; } // NullPointerException 처리 안해도 되나?
                 requestInfos.add(info);
             }
 
             for(String requestInfo : requestInfos) {
-                System.out.println(requestInfo);
+                log.debug(requestInfo);
             }
-            String requestUrl = RequestInfoUtil.getRequestUrl(requestInfos);
 
+            String requestUrl = HttpRequestUtils.parsePathString(requestInfos);
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = Files.readAllBytes(new File("./webapp" + requestUrl).toPath());
             response200Header(dos, body.length);
