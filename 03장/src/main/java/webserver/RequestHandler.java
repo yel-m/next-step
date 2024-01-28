@@ -4,7 +4,9 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Map;
 
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +42,17 @@ public class RequestHandler extends Thread {
                 log.debug(requestInfo);
             }
 
-            String requestUrl = HttpRequestUtils.parsePathString(requestInfos);
+            String pathParams = HttpRequestUtils.getPathParams(requestInfos);
+            String queryParams = HttpRequestUtils.getQueryParams(requestInfos);
+            if (!Strings.isNullOrEmpty(queryParams)) {
+                Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
+                // TODO : 유저 생성
+//                User.create(parameters);
+            }
+
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = Files.readAllBytes(new File("./webapp" + requestUrl).toPath());
+
+            byte[] body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {

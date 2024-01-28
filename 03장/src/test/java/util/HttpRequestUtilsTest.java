@@ -13,9 +13,15 @@ import util.HttpRequestUtils.Pair;
 
 public class HttpRequestUtilsTest {
     @Test
-    public void parsePathString() {
+    public void getPathParams() {
         ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html HTTP/1.1", "Host : localhost:8080"));
-        assertEquals("/index.html", HttpRequestUtils.parsePathString(requestInfos));
+        assertEquals("/index.html", HttpRequestUtils.getPathParams(requestInfos));
+    }
+
+    @Test
+    public void getQueryParams() {
+        ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html?userId=javajigi HTTP/1.1", "Host : localhost:8080"));
+        assertEquals("userId=javajigi", HttpRequestUtils.getQueryParams(requestInfos));
     }
 
     @Test
