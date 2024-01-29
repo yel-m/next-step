@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.common.base.Strings;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +47,12 @@ public class RequestHandler extends Thread {
             String queryParams = HttpRequestUtils.getQueryParams(requestInfos);
             if (!Strings.isNullOrEmpty(queryParams)) {
                 Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
-                // TODO : 유저 생성
-//                User.create(parameters);
+                new User(
+                    parameters.get("userId"),
+                    parameters.get("password"),
+                    parameters.get("name"),
+                    parameters.get("email")
+                );
             }
 
             DataOutputStream dos = new DataOutputStream(out);
