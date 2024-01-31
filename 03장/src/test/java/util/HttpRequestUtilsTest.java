@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import model.User;
 import org.junit.Test;
 
 import util.HttpRequestUtils.Pair;
@@ -22,6 +23,22 @@ public class HttpRequestUtilsTest {
     public void getQueryParams() {
         ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html?userId=javajigi HTTP/1.1", "Host : localhost:8080"));
         assertEquals("userId=javajigi", HttpRequestUtils.getQueryParams(requestInfos));
+    }
+
+    @Test
+    public void getUserInfo() {
+        String queryParams = "userId=javajigi&password=password2&email=coin6442&name=yelim";
+        Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
+        User user = new User(
+                parameters.get("userId"),
+                parameters.get("password"),
+                parameters.get("name"),
+                parameters.get("email")
+        );
+        assertEquals("javajigi", user.getUserId());
+        assertEquals("password2", user.getPassword());
+        assertEquals("coin6442", user.getEmail());
+        assertEquals("yelim", user.getName());
     }
 
     @Test
