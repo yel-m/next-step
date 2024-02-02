@@ -30,7 +30,8 @@ public class HttpRequestUtils {
         return fullUrl;
     }
 
-    public static String getContentLength(List<String> requestInfos) {
+    public static int getContentLength(List<String> requestInfos) {
+        return Integer.parseInt(requestInfos.get(3).substring(16));
     }
 
     public static String getUrl(List<String> requestInfos) {
