@@ -30,6 +30,9 @@ public class HttpRequestUtils {
         return fullUrl;
     }
 
+    public static String getContentLength(List<String> requestInfos) {
+    }
+
     public static String getUrl(List<String> requestInfos) {
         return requestInfos.get(0).split(" ")[1];
     }
