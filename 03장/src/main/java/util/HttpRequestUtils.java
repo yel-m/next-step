@@ -38,6 +38,15 @@ public class HttpRequestUtils {
         return Integer.parseInt(requestInfos.get(3).substring(16));
     }
 
+    public static String getContent(List<String> requestInfos) {
+        int length = requestInfos.toArray().length;
+        StringBuilder content = new StringBuilder();
+        for(int i = 7; i < length; i++) {
+            content.append(requestInfos.get(i));
+        }
+        return content.toString();
+    }
+
     public static String getUrl(List<String> requestInfos) {
         return requestInfos.get(0).split(" ")[1];
     }

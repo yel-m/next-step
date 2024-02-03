@@ -47,6 +47,25 @@ public class HttpRequestUtilsTest {
     }
 
     @Test
+    public void getContent() {
+        ArrayList<String> requestInfos = new ArrayList<>(
+                Arrays.asList(
+                        "POST /user/create HTTP/1.1",
+                        "Host : localhost:8080",
+                        "Connection: keep-alive",
+                        "Content-length: 59",
+                        "Content-Type: application/x-www-form-urlencoded",
+                        "Accept: */*",
+                        "",
+                        "userId=javajigi&password=password2&email=coin6442&name=yelim",
+                        "userId=javajigi&password=password2&email=coin6442&name=javajigi"
+                ));
+        assertEquals("userId=javajigi&password=password2&email=coin6442&name=yelimuserId=javajigi&password=password2&email=coin6442&name=javajigi"
+                , HttpRequestUtils.getContent(requestInfos));
+
+    }
+
+    @Test
     public void getUserInfo() {
         String queryParams = "userId=javajigi&password=password2&email=coin6442&name=yelim";
         Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
