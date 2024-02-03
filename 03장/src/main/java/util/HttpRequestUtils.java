@@ -10,6 +10,10 @@ import com.google.common.collect.Maps;
 
 public class HttpRequestUtils {
 
+    public static String getMethod(List<String> requestInfos) {
+        return requestInfos.get(0).split(" ")[0];
+    }
+
     public static String getPathParams(List<String> requestInfos) {
         String fullUrl;
         fullUrl = getUrl(requestInfos);
