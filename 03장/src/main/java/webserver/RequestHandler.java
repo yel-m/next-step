@@ -46,16 +46,26 @@ public class RequestHandler extends Thread {
 
             String pathParams = HttpRequestUtils.getPathParams(requestInfos);
             String queryParams = HttpRequestUtils.getQueryParams(requestInfos);
-            if (!Strings.isNullOrEmpty(queryParams)) {
-                Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
-                new User(
-                    parameters.get("userId"),
-                    parameters.get("password"),
-                    parameters.get("name"),
-                    parameters.get("email")
-                );
-                IOUtils.readData(reader, HttpRequestUtils.getContentLength(requestInfos));
+            String method = HttpRequestUtils.getMethod(requestInfos);
+
+            if (method.equals("GET")) {
+                if (!Strings.isNullOrEmpty(queryParams)) {
+                    Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
+                    new User(
+                            parameters.get("userId"),
+                            parameters.get("password"),
+                            parameters.get("name"),
+                            parameters.get("email")
+                    );
+
+                }
+            } else if (method.equals("POST")) {
+                String data = HttpRequestUtils.getContent(requestInfos);
+                StringReader sr = new StringReader(data);
+                BufferedReader br = new BufferedReader(sr);
+                String content = IOUtils.readData(reader, HttpRequestUtils.getContentLength(requestInfos));
             }
+
 
             DataOutputStream dos = new DataOutputStream(out);
 
