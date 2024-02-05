@@ -64,6 +64,13 @@ public class RequestHandler extends Thread {
                 StringReader sr = new StringReader(data);
                 BufferedReader br = new BufferedReader(sr);
                 String content = IOUtils.readData(reader, HttpRequestUtils.getContentLength(requestInfos));
+                Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
+                new User(
+                        parameters.get("userId"),
+                        parameters.get("password"),
+                        parameters.get("name"),
+                        parameters.get("email")
+                );
             }
 
 
