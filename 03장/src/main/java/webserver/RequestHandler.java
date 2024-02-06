@@ -48,7 +48,12 @@ public class RequestHandler extends Thread {
             String queryParams = HttpRequestUtils.getQueryParams(requestInfos);
             String method = HttpRequestUtils.getMethod(requestInfos);
 
+
+
             if (method.equals("GET")) {
+                if(pathParams.equals("/user/create")) {
+                    pathParams = "/user/form.html";
+                }
                 if (!Strings.isNullOrEmpty(queryParams)) {
                     Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
                     new User(
@@ -57,9 +62,9 @@ public class RequestHandler extends Thread {
                             parameters.get("name"),
                             parameters.get("email")
                     );
-
                 }
             } else if (method.equals("POST")) {
+                log.debug("POST 요청입니다.");
                 String data = HttpRequestUtils.getContent(requestInfos);
                 StringReader sr = new StringReader(data);
                 BufferedReader br = new BufferedReader(sr);
@@ -71,9 +76,8 @@ public class RequestHandler extends Thread {
                         parameters.get("name"),
                         parameters.get("email")
                 );
+                pathParams = "/index.html";
             }
-
-
             DataOutputStream dos = new DataOutputStream(out);
 
             byte[] body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
@@ -87,6 +91,17 @@ public class RequestHandler extends Thread {
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void response302Header(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 FOUND \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
