@@ -207,6 +207,7 @@ Files는 File과 달리, 주로 Path객체를 사용해 메서드를 사용한�
 ### 요구사항 2 - get 방식으로 회원가입
 * parseValues 분석
   * query 스트링을 &를 기준으로 구분해 Map<String, String> 형식으로 리턴하는 유틸 함수
+  * map(t -> getKeyValue(t, "=")) 각 토큰을 = 기준으로 분리하여 키와 값의 쌍으로 매핑
 
 ### 요구사항 3 - post 방식으로 회원가입
 * 
