@@ -65,18 +65,22 @@ public class RequestHandler extends Thread {
                 }
             } else if (method.equals("POST")) {
                 log.debug("POST 요청입니다.");
+
                 String data = HttpRequestUtils.getContent(requestInfos);
+                System.out.println(data);
                 StringReader sr = new StringReader(data);
                 BufferedReader br = new BufferedReader(sr);
-                String content = IOUtils.readData(reader, HttpRequestUtils.getContentLength(requestInfos));
+                String content = IOUtils.readData(br, HttpRequestUtils.getContentLength(requestInfos));
                 Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
-                new User(
-                        parameters.get("userId"),
-                        parameters.get("password"),
-                        parameters.get("name"),
-                        parameters.get("email")
-                );
-                pathParams = "/index.html";
+                if(pathParams.equals("/user/create")) {
+                    new User(
+                            parameters.get("userId"),
+                            parameters.get("password"),
+                            parameters.get("name"),
+                            parameters.get("email")
+                    );
+                    pathParams = "/index.html";
+                }
             }
             DataOutputStream dos = new DataOutputStream(out);
 
