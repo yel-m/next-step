@@ -48,35 +48,34 @@ public class RequestHandler extends Thread {
             String queryParams = HttpRequestUtils.getQueryParams(requestInfos);
             String method = HttpRequestUtils.getMethod(requestInfos);
 
+            DataOutputStream dos = new DataOutputStream(out);
+            byte[] body;
 
-
-            if (method.equals("GET")) {
-                if(pathParams.equals("/user/create")) {
+            if(pathParams.equals("/user/create")) {
+                if(method.equals("GET")) {
                     pathParams = "/user/form.html";
-                }
-                if (!Strings.isNullOrEmpty(queryParams)) {
-                    Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
-                    ModelUtils.createUser(parameters);
-                }
-            } else if (method.equals("POST")) {
-                log.debug("POST 요청입니다.");
 
-                String data = HttpRequestUtils.getContent(requestInfos);
-                System.out.println(data);
-                StringReader sr = new StringReader(data);
-                BufferedReader br = new BufferedReader(sr);
-                String content = IOUtils.readData(br, HttpRequestUtils.getContentLength(requestInfos));
-                Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
-                if(pathParams.equals("/user/create")) {
-                    ModelUtils.createUser(parameters);
+                    if (!Strings.isNullOrEmpty(queryParams)) {
+                        Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
+                        ModelUtils.createUser(parameters);
+                    }
+                    body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
+                    response200Header(dos, body.length);
+                    responseBody(dos, body);
+                }
+
+                if(method.equals("POST")) {
                     pathParams = "/index.html";
+                    String data = HttpRequestUtils.getContent(requestInfos);
+                    StringReader sr = new StringReader(data);
+                    BufferedReader br = new BufferedReader(sr);
+                    String content = IOUtils.readData(br, HttpRequestUtils.getContentLength(requestInfos));
+                    Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
+
+                    ModelUtils.createUser(parameters);
+                    response302Header(dos);
                 }
             }
-            DataOutputStream dos = new DataOutputStream(out);
-
-            byte[] body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
-            response200Header(dos, body.length);
-            responseBody(dos, body);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -93,11 +92,9 @@ public class RequestHandler extends Thread {
         }
     }
 
-    private void response302Header(DataOutputStream dos, int lengthOfBodyContent) {
+    private void response302Header(DataOutputStream dos) {
         try {
             dos.writeBytes("HTTP/1.1 302 FOUND \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
