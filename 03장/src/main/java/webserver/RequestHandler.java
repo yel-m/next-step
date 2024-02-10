@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.common.base.Strings;
-import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import util.HttpRequestUtils;
 import util.IOUtils;
+import util.ModelUtils;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -56,12 +56,7 @@ public class RequestHandler extends Thread {
                 }
                 if (!Strings.isNullOrEmpty(queryParams)) {
                     Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
-                    new User(
-                            parameters.get("userId"),
-                            parameters.get("password"),
-                            parameters.get("name"),
-                            parameters.get("email")
-                    );
+                    ModelUtils.createUser(parameters);
                 }
             } else if (method.equals("POST")) {
                 log.debug("POST 요청입니다.");
@@ -73,12 +68,7 @@ public class RequestHandler extends Thread {
                 String content = IOUtils.readData(br, HttpRequestUtils.getContentLength(requestInfos));
                 Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
                 if(pathParams.equals("/user/create")) {
-                    new User(
-                            parameters.get("userId"),
-                            parameters.get("password"),
-                            parameters.get("name"),
-                            parameters.get("email")
-                    );
+                    ModelUtils.createUser(parameters);
                     pathParams = "/index.html";
                 }
             }

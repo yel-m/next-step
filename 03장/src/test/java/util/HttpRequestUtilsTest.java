@@ -66,22 +66,6 @@ public class HttpRequestUtilsTest {
     }
 
     @Test
-    public void getUserInfo() {
-        String queryParams = "userId=javajigi&password=password2&email=coin6442&name=yelim";
-        Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
-        User user = new User(
-                parameters.get("userId"),
-                parameters.get("password"),
-                parameters.get("name"),
-                parameters.get("email")
-        );
-        assertEquals("javajigi", user.getUserId());
-        assertEquals("password2", user.getPassword());
-        assertEquals("coin6442", user.getEmail());
-        assertEquals("yelim", user.getName());
-    }
-
-    @Test
     public void parseQueryString() {
         String queryString = "userId=javajigi";
         Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryString);
