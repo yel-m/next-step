@@ -50,7 +50,15 @@ public class RequestHandler extends Thread {
 
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body;
-
+            if(pathParams.equals("/")) {
+                pathParams = "/index.html";
+            }
+            if(pathParams.equals("/index.html")) {
+                pathParams = "/index.html";
+                body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
+                response200Header(dos, body.length);
+                responseBody(dos, body);
+            }
             if(pathParams.equals("/user/create")) {
                 if(method.equals("GET")) {
                     pathParams = "/user/form.html";
