@@ -83,6 +83,10 @@ public class RequestHandler extends Thread {
                     ModelUtils.createUser(parameters);
                     response302Header(dos);
                 }
+            } else {
+                body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
+                response200Header(dos, body.length);
+                responseBody(dos, body);
             }
         } catch (IOException e) {
             log.error(e.getMessage());
