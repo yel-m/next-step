@@ -81,7 +81,9 @@ public class RequestHandler extends Thread {
                     Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
 
                     ModelUtils.createUser(parameters);
+                    body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
                     response302Header(dos);
+                    responseBody(dos, body);
                 }
             } else {
                 body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
