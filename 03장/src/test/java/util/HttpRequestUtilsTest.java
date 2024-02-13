@@ -7,15 +7,62 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import model.User;
 import org.junit.Test;
 
 import util.HttpRequestUtils.Pair;
 
 public class HttpRequestUtilsTest {
+
     @Test
-    public void parsePathString() {
+    public void getMethod() {
         ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html HTTP/1.1", "Host : localhost:8080"));
-        assertEquals("/index.html", HttpRequestUtils.parsePathString(requestInfos));
+        assertEquals("GET", HttpRequestUtils.getMethod(requestInfos));
+    }
+    @Test
+    public void getPathParams() {
+        ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html HTTP/1.1", "Host : localhost:8080"));
+        assertEquals("/index.html", HttpRequestUtils.getPathParams(requestInfos));
+    }
+
+    @Test
+    public void getQueryParams() {
+        ArrayList<String> requestInfos = new ArrayList<>(Arrays.asList("GET /index.html?userId=javajigi HTTP/1.1", "Host : localhost:8080"));
+        assertEquals("userId=javajigi", HttpRequestUtils.getQueryParams(requestInfos));
+    }
+
+    @Test
+    public void getContentLength() {
+
+        ArrayList<String> requestInfos = new ArrayList<>(
+                Arrays.asList(
+                        "POST /user/create HTTP/1.1",
+                        "Host : localhost:8080",
+                        "Connection: keep-alive",
+                        "Content-length: 59",
+                        "Content-Type: application/x-www-form-urlencoded",
+                        "Accept: */*"
+                ));
+        assertEquals(59, HttpRequestUtils.getContentLength(requestInfos));
+    }
+
+    @Test
+    public void getContent() {
+        ArrayList<String> requestInfos = new ArrayList<>(
+                Arrays.asList(
+                        "POST /user/create HTTP/1.1",
+                        "Host : localhost:8080",
+                        "Connection: keep-alive",
+                        "Content-length: 59",
+                        "Content-Type: application/x-www-form-urlencoded",
+                        "Accept: */*",
+                        "",
+                        "userId=javajigi&password=password2&email=coin6442&name=yelim",
+                        "userId=javajigi&password=password2&email=coin6442&name=javajigi"
+                ));
+        assertEquals("userId=javajigi&password=password2&email=coin6442&name=yelimuserId=javajigi&password=password2&email=coin6442&name=javajigi"
+                , HttpRequestUtils.getContent(requestInfos));
+
     }
 
     @Test

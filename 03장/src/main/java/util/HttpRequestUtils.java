@@ -10,7 +10,44 @@ import com.google.common.collect.Maps;
 
 public class HttpRequestUtils {
 
-    public static String parsePathString(List<String> requestInfos) {
+    public static String getMethod(List<String> requestInfos) {
+        return requestInfos.get(0).split(" ")[0];
+    }
+
+    public static String getPathParams(List<String> requestInfos) {
+        String fullUrl;
+        fullUrl = getUrl(requestInfos);
+        if(fullUrl.contains("?")) {
+            int index = fullUrl.indexOf("?");
+            return fullUrl.substring(0, index);
+        }
+        return fullUrl;
+    }
+
+    public static String getQueryParams(List<String> requestInfos) {
+        String fullUrl;
+        fullUrl = getUrl(requestInfos);
+        if(fullUrl.contains("?")) {
+            int index = fullUrl.indexOf("?");
+            return fullUrl.substring(index+1);
+        }
+        return fullUrl;
+    }
+
+    public static int getContentLength(List<String> requestInfos) {
+        return Integer.parseInt(requestInfos.get(3).substring(16));
+    }
+
+    public static String getContent(List<String> requestInfos) {
+        int length = requestInfos.toArray().length;
+        StringBuilder content = new StringBuilder();
+        for(int i = 7; i < length; i++) {
+            content.append(requestInfos.get(i));
+        }
+        return content.toString();
+    }
+
+    public static String getUrl(List<String> requestInfos) {
         return requestInfos.get(0).split(" ")[1];
     }
 
