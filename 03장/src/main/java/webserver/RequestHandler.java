@@ -85,7 +85,9 @@ public class RequestHandler extends Thread {
                     response302Header(dos);
                     responseBody(dos, body);
                 }
-            } else {
+            } if(pathParams.equals("/user/login.html")) {
+            }
+            }else {
                 body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
                 response200Header(dos, body.length);
                 responseBody(dos, body);
