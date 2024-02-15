@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.common.base.Strings;
+import db.DataBase;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +36,7 @@ public class RequestHandler extends Thread {
 
             ArrayList<String> requestInfos = new ArrayList<>();
             String info;
+            Map<String, String> parameters;
 
             while(!"".equals(info = reader.readLine())) {
                 if (info == null) { return; } // NullPointerException 처리 안해도 되나?
@@ -64,7 +67,7 @@ public class RequestHandler extends Thread {
                     pathParams = "/user/form.html";
 
                     if (!Strings.isNullOrEmpty(queryParams)) {
-                        Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
+                        parameters = HttpRequestUtils.parseQueryString(queryParams);
                         ModelUtils.createUser(parameters);
                     }
                     body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
@@ -78,16 +81,16 @@ public class RequestHandler extends Thread {
                     StringReader sr = new StringReader(data);
                     BufferedReader br = new BufferedReader(sr);
                     String content = IOUtils.readData(br, HttpRequestUtils.getContentLength(requestInfos));
-                    Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
+                    parameters = HttpRequestUtils.parseQueryString(content);
 
-                    ModelUtils.createUser(parameters);
+                    User user = ModelUtils.createUser(parameters);
+                    DataBase.addUser(user);
                     body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
                     response302Header(dos);
                     responseBody(dos, body);
                 }
             } if(pathParams.equals("/user/login.html")) {
-            }
-            }else {
+            } else {
                 body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
                 response200Header(dos, body.length);
                 responseBody(dos, body);
