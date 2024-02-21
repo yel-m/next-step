@@ -18,6 +18,9 @@ public class ModelUtils {
 
     public static boolean isUser(String userId, String password) {
         User user = findUserById(userId);
-        return user != null && user.getPassword().equals(password);
+        if(user == null || !user.getPassword().equals(password)) {
+            throw new UserNotFoundException();
+        }
+        return true;
     }
 }
