@@ -7,12 +7,17 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.common.base.Strings;
+import db.DataBase;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import util.HttpRequestUtils;
 import util.IOUtils;
 import util.ModelUtils;
+import util.UserNotFoundException;
+
+import static util.ModelUtils.isUser;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -34,6 +39,7 @@ public class RequestHandler extends Thread {
 
             ArrayList<String> requestInfos = new ArrayList<>();
             String info;
+            Map<String, String> parameters;
 
             while(!"".equals(info = reader.readLine())) {
                 if (info == null) { return; } // NullPointerException 처리 안해도 되나?
@@ -64,7 +70,7 @@ public class RequestHandler extends Thread {
                     pathParams = "/user/form.html";
 
                     if (!Strings.isNullOrEmpty(queryParams)) {
-                        Map<String, String> parameters = HttpRequestUtils.parseQueryString(queryParams);
+                        parameters = HttpRequestUtils.parseQueryString(queryParams);
                         ModelUtils.createUser(parameters);
                     }
                     body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
@@ -78,11 +84,15 @@ public class RequestHandler extends Thread {
                     StringReader sr = new StringReader(data);
                     BufferedReader br = new BufferedReader(sr);
                     String content = IOUtils.readData(br, HttpRequestUtils.getContentLength(requestInfos));
-                    Map<String, String> parameters = HttpRequestUtils.parseQueryString(content);
+                    parameters = HttpRequestUtils.parseQueryString(content);
 
-                    ModelUtils.createUser(parameters);
+                    User user = ModelUtils.createUser(parameters);
+                    DataBase.addUser(user);
+                    body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
                     response302Header(dos);
+                    responseBody(dos, body);
                 }
+            } if(pathParams.equals("/user/login.html")) {
             } else {
                 body = Files.readAllBytes(new File("./webapp" + pathParams).toPath());
                 response200Header(dos, body.length);
@@ -97,6 +107,18 @@ public class RequestHandler extends Thread {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+            dos.writeBytes("Set-Cookie: logined=false\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+    private void response200Header(DataOutputStream dos, int lengthOfBodyContent, boolean logined) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+            dos.writeBytes("Set-Cookie: logined=" + logined + "\r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
